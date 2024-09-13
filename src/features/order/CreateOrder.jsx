@@ -79,8 +79,11 @@ function CreateOrder() {
   );
 }
 
-export async function action(){
-  createOrder()
+export async function action({request}){
+  const formData = await request.formData();
+
+  console.log(formData);
+  return null;
 }
 
 export default CreateOrder;
