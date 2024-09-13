@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createOrder } from "../../services/apiRestaurant";
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -75,6 +76,10 @@ function CreateOrder() {
       </form>
     </div>
   );
+}
+
+export async function action(){
+  createOrder()
 }
 
 export default CreateOrder;
