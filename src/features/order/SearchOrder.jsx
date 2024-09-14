@@ -13,7 +13,7 @@ const SearchOrder = () => {
     
   return (
     <form onSubmit={handleSubmit}>
-        <input placeholder="Search Order #" value={query} onChange={(e)=>setQuery(e.target.value)} type="text"/>
+        <input className="rounded-2xl p-2 pr-5" placeholder="Search Order #" value={query} onChange={(e)=>setQuery(e.target.value)} type="text"/>
     </form>
   );
 };
