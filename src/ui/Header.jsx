@@ -3,8 +3,8 @@ import SearchOrder from "../features/order/SearchOrder";
 
 const Header = () => {
   return (
-    <header>
-      <Link to="/">Fast React Pizza Co.</Link>
+    <header className="bg-yellow-400 flex justify-between items-center p-4">
+      <Link to="/"><span className="uppercase">Fast React Pizza Co.</span></Link>
 
       <SearchOrder/>
 
