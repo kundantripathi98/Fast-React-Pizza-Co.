@@ -3,8 +3,9 @@ import { Form, redirect, useActionData, useNavigation } from 'react-router-dom';
 import { createOrder } from '../../services/apiRestaurant';
 import Button from '../../ui/Button';
 import { useSelector } from 'react-redux';
-import { getTotalCart, getTotalCartPrice } from '../cart/cartSlice';
+import { getCart, getTotalCart, getTotalCartPrice } from '../cart/cartSlice';
 import { formatCurrency } from '../../utils/helpers';
+import EmptyCart from '../cart/EmptyCart';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -46,9 +47,10 @@ function CreateOrder() {
   const totalPrice = useSelector(getTotalCartPrice);
 
   // const [withPriority, setWithPriority] = useState(false);
-  const {cart} = useSelector(store => store.cart);
+  const cart = useSelector(getCart);
   console.log(cart);
   
+  if(!cart.length) return <EmptyCart/>
 
   return (
     <div className="px-4 py-6">
@@ -95,7 +97,7 @@ function CreateOrder() {
             // onChange={(e) => setWithPriority(e.target.checked)}
           />
           <label htmlFor="priority" className="font-medium">
-            Want to yo give your order priority?
+            Want to give your order priority?
           </label>
         </div>
 
