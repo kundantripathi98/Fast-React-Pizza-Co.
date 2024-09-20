@@ -53,7 +53,7 @@ function MenuItem({ pizza }) {
             </p>
           )}
 
-          <UpdateItemQuantity/>
+          <UpdateItemQuantity pizzaId={id}/>
           {isInCart && <DeleteItem id={id}/>}
 
           {!soldOut && !isInCart && <Button type="small" onClick={handleAddItem}>Add to cart</Button>}
