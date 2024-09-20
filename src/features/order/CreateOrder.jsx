@@ -3,6 +3,8 @@ import { Form, redirect, useActionData, useNavigation } from 'react-router-dom';
 import { createOrder } from '../../services/apiRestaurant';
 import Button from '../../ui/Button';
 import { useSelector } from 'react-redux';
+import { getTotalCart, getTotalCartPrice } from '../cart/cartSlice';
+import { formatCurrency } from '../../utils/helpers';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -41,8 +43,12 @@ function CreateOrder() {
   const formErrors = useActionData();
   const {userName} = useSelector(store => store.user);
 
+  const totalPrice = useSelector(getTotalCartPrice);
+
   // const [withPriority, setWithPriority] = useState(false);
-  const cart = fakeCart;
+  const {cart} = useSelector(store => store.cart);
+  console.log(cart);
+  
 
   return (
     <div className="px-4 py-6">
@@ -96,7 +102,7 @@ function CreateOrder() {
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
           <Button disabled={isSubmitting} type="primary">
-            {isSubmitting ? 'Placing order....' : 'Order now'}
+            {isSubmitting ? 'Placing order....' : `Order now from ${formatCurrency(totalPrice)}`}
           </Button>
         </div>
       </Form>
