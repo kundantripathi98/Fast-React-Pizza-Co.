@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { Form, redirect, useActionData, useNavigation } from 'react-router-dom';
 import { createOrder } from '../../services/apiRestaurant';
 import Button from '../../ui/Button';
-import { useSelector } from 'react-redux';
-import { getCart, getTotalCart, getTotalCartPrice } from '../cart/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearCart, getCart, getTotalCart, getTotalCartPrice } from '../cart/cartSlice';
 import { formatCurrency } from '../../utils/helpers';
 import EmptyCart from '../cart/EmptyCart';
+import store from '../../../store';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -43,9 +44,10 @@ function CreateOrder() {
 
   const formErrors = useActionData();
   const {userName} = useSelector(store => store.user);
-
+  
   const totalPrice = useSelector(getTotalCartPrice);
-
+  const dispatch = useDispatch();
+  
   // const [withPriority, setWithPriority] = useState(false);
   const cart = useSelector(getCart);
   console.log(cart);
@@ -116,6 +118,8 @@ export async function action({ request }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
 
+  store.dispatch(clearCart());
+
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
@@ -132,6 +136,7 @@ export async function action({ request }) {
   // If everything is okay, create new order and redirect
 
   const newOrder = await createOrder(order);
+  
 
   return redirect(`/order/${newOrder.id}`);
 }
