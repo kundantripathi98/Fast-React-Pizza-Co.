@@ -4,8 +4,8 @@ import { deleteItem } from "./cartSlice";
 
 const DeleteItem = ({id}) => {
     const dispatch = useDispatch();
+    
     function handleDelete(){
-        // console.log(id);
         dispatch(deleteItem(id));
     }
 
