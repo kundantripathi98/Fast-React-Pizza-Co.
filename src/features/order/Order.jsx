@@ -88,7 +88,7 @@ function Order() {
         {/* <p>Delivery address: {address}</p> */}
       </div>
 
-      {!priority && <UpdateOrder order={order}/>}
+      {/* {!priority && <UpdateOrder order={order}/>} */}
     </div>
   );
 }
