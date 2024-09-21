@@ -45,12 +45,15 @@ function CreateOrder() {
   const formErrors = useActionData();
   const {userName} = useSelector(store => store.user);
   
-  const totalPrice = useSelector(getTotalCartPrice);
   const dispatch = useDispatch();
   
-  // const [withPriority, setWithPriority] = useState(false);
+  const [withPriority, setWithPriority] = useState(false);
+  const totalcartPrice = useSelector(getTotalCartPrice);
+  const priorityPrice = withPriority ? Math.round(totalcartPrice * 0.2) : 0;
+  const totalPrice = totalcartPrice + priorityPrice;
+
+  
   const cart = useSelector(getCart);
-  console.log(cart);
   
   if(!cart.length) return <EmptyCart/>
 
@@ -95,8 +98,8 @@ function CreateOrder() {
             type="checkbox"
             name="priority"
             id="priority"
-            // value={withPriority}
-            // onChange={(e) => setWithPriority(e.target.checked)}
+            value={withPriority}
+            onChange={(e) => setWithPriority(e.target.checked)}
           />
           <label htmlFor="priority" className="font-medium">
             Want to give your order priority?
@@ -123,7 +126,7 @@ export async function action({ request }) {
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
-    priority: data.priority === 'on',
+    priority: data.priority === 'true',
   };
 
   const errors = {};
