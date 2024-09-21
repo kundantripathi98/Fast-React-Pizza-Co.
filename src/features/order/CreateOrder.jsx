@@ -47,6 +47,7 @@ function CreateOrder() {
   const {userName} = useSelector(store => store.user);
   
   const dispatch = useDispatch();
+  const {position, address} = useSelector(store => store.user);
   
   const [withPriority, setWithPriority] = useState(false);
   const totalcartPrice = useSelector(getTotalCartPrice);
@@ -57,12 +58,14 @@ function CreateOrder() {
   const cart = useSelector(getCart);
   
   if(!cart.length) return <EmptyCart/>
+  
 
   return (
     <div className="px-4 py-6">
       <h2 className="mb-8 text-xl font-semibold">Ready to order? Let's go!</h2>
 
       {/* <Form method="POST" action="/order/new"> */}
+      <Button type="round" onClick={() => dispatch(fetchAddress())}>Get Position</Button>
       <Form method="POST">
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-40">User Name</label>
