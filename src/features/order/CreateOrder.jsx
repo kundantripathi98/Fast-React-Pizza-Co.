@@ -44,7 +44,7 @@ function CreateOrder() {
   const isSubmitting = navigation.state === 'submitting';
 
   const formErrors = useActionData();
-  const {userName, address, status: addressStatus, position} = useSelector(store => store.user);
+  const {userName, address, status: addressStatus, position, error} = useSelector(store => store.user);
   const isLoadingAddress = addressStatus === "loading";
   
   const dispatch = useDispatch();
@@ -94,6 +94,11 @@ function CreateOrder() {
               name="address"
               required
             />
+            {addressStatus === "error" && (
+              <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">
+                {error}
+              </p>
+            )}
           </div>
           {!position.latitude && !position.longitude && <span className=''>
             <Button type="small" onClick={(e) => {
@@ -119,6 +124,7 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+          <input type="hidden" name="position" value={position.latitude && position.longitude ? `${position?.latitude}, ${position?.longitude}` : ""} />
           <Button disabled={isSubmitting} type="primary">
             {isSubmitting ? 'Placing order....' : `Order now from ${formatCurrency(totalPrice)}`}
           </Button>
