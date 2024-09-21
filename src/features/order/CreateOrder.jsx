@@ -44,10 +44,10 @@ function CreateOrder() {
   const isSubmitting = navigation.state === 'submitting';
 
   const formErrors = useActionData();
-  const {userName} = useSelector(store => store.user);
+  const {userName, address, status: addressStatus, position} = useSelector(store => store.user);
+  const isLoadingAddress = addressStatus === "loading";
   
   const dispatch = useDispatch();
-  const {error} = useSelector(store => store.user);
   
   const [withPriority, setWithPriority] = useState(false);
   const totalcartPrice = useSelector(getTotalCartPrice);
@@ -83,22 +83,24 @@ function CreateOrder() {
           </div>
         </div>
 
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center relative">
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-40">Address</label>
           <div className="grow">
             <input
               className="input w-full"
+              defaultValue={address}
+              disabled = {isLoadingAddress}
               type="text"
               name="address"
               required
             />
           </div>
-          <span className='absolute right-[3px] z-50'>
+          {!position.latitude && !position.longitude && <span className=''>
             <Button type="small" onClick={(e) => {
               e.preventDefault();
               dispatch(fetchAddress())
-            }}>Get Position</Button>
-          </span>
+            }} disabled={isLoadingAddress}>{!isLoadingAddress ? "Get Position" : "Loading..."}</Button>
+          </span>}
         </div>
 
         <div className="mb-12 flex items-center gap-5">
@@ -135,7 +137,7 @@ export async function action({ request }) {
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
-    priority: data.priority === 'true ',
+    priority: data.priority === 'true',
   };
 
   const errors = {};
