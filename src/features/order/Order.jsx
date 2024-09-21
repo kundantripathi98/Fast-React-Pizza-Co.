@@ -10,6 +10,8 @@ import {
   formatDate,
 } from '../../utils/helpers';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import UpdateOrder from './UpdateOrder';
 
 function Order() {
   const order = useLoaderData();
@@ -25,6 +27,8 @@ function Order() {
     cart,
   } = order;
 
+  const {address} = useSelector(store => store.user);
+
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
   const fetcher = useFetcher();
@@ -34,9 +38,6 @@ function Order() {
       fetcher.load('/menu');
     }
   }, [fetcher]);
-
-  console.log(fetcher.data);
-  
 
   return (
     <div className="space-y-8 px-4 py-6">
@@ -84,7 +85,10 @@ function Order() {
         <p className="font-bold">
           To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}
         </p>
+        {/* <p>Delivery address: {address}</p> */}
       </div>
+
+      {!priority && <UpdateOrder order={order}/>}
     </div>
   );
 }
